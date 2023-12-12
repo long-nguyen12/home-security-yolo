@@ -33,7 +33,7 @@ async def create_history(history: history.HistorySchema = Body(...)):
     return await history_service.create(notification_dict)
 
 
-@router.get("/api/history/", dependencies=[Depends(JwtBearer())], tags=["Histories"])
+@router.get("/api/history", dependencies=[Depends(JwtBearer())], tags=["Histories"])
 async def get_histories(
     username: str = Depends(JwtBearer()),
     skip: int = Query(0, alias="skip", ge=0),

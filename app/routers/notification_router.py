@@ -81,7 +81,7 @@ async def create_polygon(notification: notification.NotificationSchema = Body(..
 
 
 @router.get(
-    "/api/notification/", dependencies=[Depends(JwtBearer())], tags=["Notifications"]
+    "/api/notification", dependencies=[Depends(JwtBearer())], tags=["Notifications"]
 )
 async def get_notifications(
     username: str = Depends(JwtBearer()),

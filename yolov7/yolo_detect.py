@@ -161,7 +161,7 @@ class YoloDetect:
 
     def alert_image(self, file_name):
         response = requests.post(
-            f"http://{env_service.get_env_var('BASE_ADDRESS')}:8008/api/notification",
+            f"http://{env_service.get_env_var('BASE_ADDRESS')}:8008/api/notification/",
             json={"user_id": str(self.user_id), "detection_path": file_name},
         )
         if response.status_code == 200:
@@ -181,7 +181,7 @@ class YoloDetect:
             img, checked, file_name = self.detect_single_image(img)
 
             response = requests.post(
-                f"http://{env_service.get_env_var('BASE_ADDRESS')}:8008/api/history",
+                f"http://{env_service.get_env_var('BASE_ADDRESS')}:8008/api/history/",
                 json={
                     "user_id": str(self.user_id),
                     "result_path": file_name,

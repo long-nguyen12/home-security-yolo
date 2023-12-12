@@ -13,7 +13,7 @@ polygon_service = PolygonService()
 user_service = UserService()
 
 
-@router.post("/api/polygon/", dependencies=[Depends(JwtBearer())], tags=["Polygons"])
+@router.post("/api/polygon", dependencies=[Depends(JwtBearer())], tags=["Polygons"])
 async def create_polygon(
     polygon: polygon.PolygonSchema = Body(...), username=Depends(JwtBearer())
 ):
