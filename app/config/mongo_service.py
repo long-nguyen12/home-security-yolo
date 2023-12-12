@@ -55,6 +55,21 @@ class MongoService:
             return model_cls(**result)
         else:
             raise HTTPException(status_code=404, detail="Not found!")
+        
+    async def get_user(
+        self,
+        collection_name: str,
+        search_by: str,
+        search_value: str,
+        model_cls: MongoModel,
+    ) -> Optional[MongoModel]:
+        result = await self.mongo_client[self.db_name][collection_name].find_one(
+            {f"{search_by}": search_value}
+        )
+        if result:
+            return model_cls(**result)
+        else:
+            return None
 
     async def update(
         self,

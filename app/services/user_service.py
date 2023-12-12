@@ -6,6 +6,7 @@ from app.schemas import user as user_model
 from passlib.context import CryptContext
 from .base import BaseService
 from datetime import datetime
+from pydantic import BaseModel
 
 
 class UserService(BaseService):
@@ -25,10 +26,16 @@ class UserService(BaseService):
         return self.hasher.verify(password, encoded_password)
 
     async def create(self, user) -> JSONResponse:
+        check_user = await db_mongo.get_user(
+            self.collection_name, "username", user["username"], BaseModel
+        )
+        if check_user:
+            return JSONResponse(
+                status_code=status.HTTP_409_CONFLICT,
+                content={"message": "Tên đăng nhập đã tồn tại"},
+            )
         hashed_password = self.encode_password(user["password"])
         user["password"] = hashed_password
-        user["createdAt"] = datetime.utcnow()
-        user["updatedAt"] = datetime.utcnow()
         new_user = await db_mongo.create(self.collection_name, user)
         return JSONResponse(
             status_code=status.HTTP_201_CREATED
